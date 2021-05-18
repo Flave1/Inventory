@@ -1,0 +1,4 @@
+﻿<StaticWebAssets Version="1.0">
+  <ContentRoot BasePath="/Serenity.Assets" Path="C:\Users\flave\.nuget\packages\serenity.assets\5.0.21\build\..\staticwebassets\" />
+  <ContentRoot BasePath="/Serenity.Demo.ThemeSamples" Path="C:\Users\flave\.nuget\packages\serenity.demo.themesamples\5.0.20.1\build\..\staticwebassets\" />
+</StaticWebAssets>

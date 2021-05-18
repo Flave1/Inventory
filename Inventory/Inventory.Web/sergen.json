@@ -1,0 +1,53 @@
+{
+  "RootNamespace": "Inventory",
+  "ServerTypings": {
+    "LocalTexts": true
+  },
+  "Connections": [
+    {
+      "Key": "Default",
+      "Tables": [
+        {
+          "Tablename": "inv.FulfillmentStatus",
+          "Identifier": "FulfillmentStatus",
+          "Module": "Inventory",
+          "PermissionKey": "Administration:General"
+        },
+        {
+          "Tablename": "inv.OrderItems",
+          "Identifier": "OrderItems",
+          "Module": "Inventory",
+          "PermissionKey": "Administration:General"
+        },
+        {
+          "Tablename": "inv.Orders",
+          "Identifier": "Orders",
+          "Module": "Inventory",
+          "PermissionKey": "Administration:General"
+        },
+        {
+          "Tablename": "inv.Product",
+          "Identifier": "Product",
+          "Module": "Inventory",
+          "PermissionKey": "Administration:General"
+        },
+        {
+          "Tablename": "inv.Supplier",
+          "Identifier": "Supplier",
+          "Module": "Inventory",
+          "PermissionKey": "Administration:General"
+        },
+        {
+          "Tablename": "inv.UserType",
+          "Identifier": "UserType",
+          "Module": "Inventory",
+          "PermissionKey": "Administration:General"
+        }
+      ]
+    }
+  ],
+  "UpgradeInfo": {
+    "InitialType": "Community",
+    "InitialVersion": "5.0.24.0"
+  }
+}
