@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "+jIq8eNXE8/j4n18pBt+vlDknOEYfyf5AVhF5oujzPNiazeFGnVMKsLIcEjaQMobAI3t/fyL8Dyspte90M60CQ==",
+  "dgSpecHash": "dn/wANCluVvoxSCMum7ntv6VY6TwIoKb9ON5g+pn9yI3nkZ+xSyGFZoutWVEokktwVV1uCeka67l7QSQ+5ZXyA==",
   "success": true,
   "projectFilePath": "C:\\Users\\flave\\source\\repos\\Inventory\\Inventory\\Inventory.Web\\Inventory.Web.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\flave\\.nuget\\packages\\dapper\\2.0.35\\dapper.2.0.35.nupkg.sha512",
+    "C:\\Users\\flave\\.nuget\\packages\\dapper\\2.0.90\\dapper.2.0.90.nupkg.sha512",
     "C:\\Users\\flave\\.nuget\\packages\\epplus\\4.5.3.2\\epplus.4.5.3.2.nupkg.sha512",
     "C:\\Users\\flave\\.nuget\\packages\\fastmember\\1.5.0\\fastmember.1.5.0.nupkg.sha512",
     "C:\\Users\\flave\\.nuget\\packages\\fluentmigrator\\3.2.9\\fluentmigrator.3.2.9.nupkg.sha512",
@@ -134,7 +134,6 @@
     "C:\\Users\\flave\\.nuget\\packages\\system.net.primitives\\4.3.0\\system.net.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\flave\\.nuget\\packages\\system.net.security\\4.3.2\\system.net.security.4.3.2.nupkg.sha512",
     "C:\\Users\\flave\\.nuget\\packages\\system.reflection\\4.3.0\\system.reflection.4.3.0.nupkg.sha512",
-    "C:\\Users\\flave\\.nuget\\packages\\system.reflection.emit.lightweight\\4.7.0\\system.reflection.emit.lightweight.4.7.0.nupkg.sha512",
     "C:\\Users\\flave\\.nuget\\packages\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512",
     "C:\\Users\\flave\\.nuget\\packages\\system.reflection.primitives\\4.3.0\\system.reflection.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\flave\\.nuget\\packages\\system.reflection.typeextensions\\4.3.0\\system.reflection.typeextensions.4.3.0.nupkg.sha512",

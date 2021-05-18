@@ -3,20 +3,20 @@ using MyRow = Inventory.Inventory.Entities.OrdersRow;
 
 namespace Inventory.Inventory.Repositories
 {
-using Serenity;
     using Web.Modules.Inventory.Enums;
     using Serenity.Data;
     using Serenity.Services;
     using System;
-    using System.Data; 
+    using System.Data;
     using System.Linq;
+
     public class OrdersRepository : BaseRepository
     {
-        private static MyRow.RowFields Fld => MyRow.Fields;
+        private static MyRow.RowFields Fld => MyRow.Fields; 
 
         public OrdersRepository(IRequestContext context)
             : base(context)
-        {
+        { 
         }
 
         public SaveResponse Create(IUnitOfWork uow, SaveRequest<MyRow> request)
@@ -86,18 +86,30 @@ using Serenity;
         
         private class MyListHandler : ListRequestHandler<MyRow> 
         {
+
             public MyListHandler(IRequestContext context)
                 : base(context)
             {
-            }
-
+            } 
             protected override void ApplyFilters(SqlQuery query)
             {
                 base.ApplyFilters(query);
-
-                //var user = (UserDefinition)Authorization.UserDefinition; 
-                //var some = Serenity.Authorization.
-
+                var userTpe = Context.User.FindFirst(d => d.Type == "UserType")?.Value;
+                //if (!User.IsInRole("Admin"))
+                if (User.Identity.Name != "admin")
+                {
+                    if (userTpe == "1" || userTpe == "2")//  Employee || Customer
+                    {
+                        if (userTpe == "1")//  Employee
+                        {
+                            query.Where(Fld.Status == "3");//  Failed
+                        }
+                        if (userTpe == "2")//  Customer
+                        {
+                            query.Where(Fld.Status == "1" && Fld.Status == "2");//  Fulfilled && Unfulfilled
+                        }
+                    }
+                } 
             }
 
         }

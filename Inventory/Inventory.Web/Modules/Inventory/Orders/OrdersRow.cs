@@ -13,8 +13,8 @@ namespace Inventory.Inventory.Entities
 {
     [ConnectionKey("Default"), Module("Inventory"), TableName("[inv].[Orders]")]
     [DisplayName("Orders"), InstanceName("Orders")]
-    [ReadPermission("Administration:General")]
-    [ModifyPermission("Administration:Employee")]
+    [ReadPermission(PermissionKeys.Orders.View)]
+    [ModifyPermission(PermissionKeys.Orders.Modify)]
     [JsonConverter(typeof(JsonConverter))]
     [LookupScript("Inventory.Orders")]
     public sealed class OrdersRow : Row<OrdersRow.RowFields>, IIdRow, INameRow

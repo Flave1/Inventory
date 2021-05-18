@@ -86,6 +86,7 @@ namespace Inventory.Administration
                 throw new ArgumentNullException(nameof(username));
 
             var user = userRetriever.ByUsername(username);
+            var userData = (UserDefinition)user;
             if (user == null)
                 throw new ArgumentOutOfRangeException(nameof(username));
 
@@ -94,8 +95,11 @@ namespace Inventory.Administration
 
             var identity = new GenericIdentity(username, authType);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
+            identity.AddClaim(new Claim("UserType", userData.UserType.ToString()));
 
             return new ClaimsPrincipal(identity);
         }
+
+        
     }
 }

@@ -99,7 +99,7 @@ namespace Inventory.Administration.Entities
             set => fields.LastDirectoryUpdate[this] = value;
         }
 
-        [DisplayName("User Type"), ForeignKey("[inv].UserType", "UserTypeId"), TextualField("Name"),  LeftJoin("g")]
+        [DisplayName("User Type"), ForeignKey("[inv].UserType", "UserTypeId"), TextualField("Name"),  LeftJoin("g"), LookupInclude]
         [LookupEditor(typeof(UserTypeRow), InplaceAdd = true)]
         public Int32? UserType
         {
