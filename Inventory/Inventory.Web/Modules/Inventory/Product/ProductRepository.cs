@@ -71,6 +71,24 @@ namespace Inventory.Inventory.Repositories
                 : base(context)
             {
             }
+            protected override void ApplyFilters(SqlQuery query)
+            {
+                base.ApplyFilters(query);
+                var userTpe = Context.User.FindFirst(d => d.Type == "UserType")?.Value;
+               
+                if (User.Identity.Name != "admin")
+                {
+                    if (userTpe == "3")//  Suppliers
+                    {
+                        var userId = User.GetIdentifier();
+                        query.Where(Fld.SupplierUserId == Convert.ToInt32(userId));
+                    }
+                    if (userTpe == "1")//  Employees
+                    {
+                        //All by default
+                    }
+                }
+            }
         }
     }
 }
