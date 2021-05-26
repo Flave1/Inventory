@@ -11,26 +11,58 @@ namespace Inventory.Inventory {
         protected getInsertPermission() { return OrdersRow.insertPermission; }
         protected getLocalTextPrefix() { return OrdersRow.localTextPrefix; }
         protected getService() { return OrdersService.baseUrl; }
-
+        public dragValue = "";
         private pendingChanges: Q.Dictionary<any> = {};
 
         constructor(container: JQuery) {
             super(container);
-            this.slickContainer.on('change', '.edit:input', (e) => this.inputsChange(e));
+            this.slickContainer.on('change', '.edit:input', (e) => this.inputsChange(e)); 
+            //this.slickContainer.on('dragenter', (e) => this.inputsChange(e)); 
+
         }
 
-        //protected getButtons() {
-        //    var buttons = super.getButtons();
-  
-        //    buttons.push({
-        //        title: 'Save Changes',
-        //        cssClass: 'apply-changes-button disabled',
-        //        onClick: e => this.saveClick(),
-        //        separator: true
-        //    });
+         
+        protected getButtons() {
+            var buttons = super.getButtons();
 
-        //    return buttons;
-        //}
+            //buttons.push(Common.ExcelExportHelper.createToolButton({
+            //    grid: this,
+            //    service: ProductService.baseUrl + '/ListExcel',
+            //    onViewSubmit: () => this.onViewSubmit(),
+            //    separator: true
+            //}));
+
+            buttons.push(Common.PdfExportHelper.createToolButton({
+                grid: this,
+                onViewSubmit: () => this.onViewSubmit(),
+                reportTitle: 'Product List',
+                columnTitles: {
+                    'Discontinued': 'Dis.',
+                },
+                tableOptions: {
+                    columnStyles: {
+                        ProductID: {
+                            columnWidth: 25,
+                            halign: 'right'
+                        },
+                        Discountinued: {
+                            columnWidth: 25
+                        }
+                    }
+                }
+            }));
+
+            buttons.push({
+                title: 'Save Changes',
+                cssClass: 'apply-changes-button disabled',
+                onClick: e => this.saveClick(),
+                separator: true
+            });
+
+            return buttons;
+        }
+
+       
 
         private saveClick() {
             if (Object.keys(this.pendingChanges).length === 0) {
@@ -95,9 +127,9 @@ namespace Inventory.Inventory {
                 "' value='" + Q.formatNumber(value, '0.##') + "'/>";
         }
 
-        private stringInputFormatter(ctx) {
-           
-            var klass = 'edit string';
+        private stringInputFormatter(ctx) { 
+            var klass = 'edit string ';//drag-fill
+            var isDraggable = true;
             var item = ctx.item as OrdersRow;
             var pending = this.pendingChanges[item.OrderId];
             var column = ctx.column as Slick.Column;
@@ -112,12 +144,22 @@ namespace Inventory.Inventory {
                 return "<div> </div>";
             }
 
-            return "<input type='text' class='" + klass +
+            return "<input type='text' draggable='" + isDraggable +"'  class='" + klass +
                 "' data-field='" + column.field +
                 "' value='" + Q.attrEncode(value) +
                 "' maxlength='" + column.sourceItem.maxLength + "'/>";
         }
+         
+        protected viewDataChanged(e: any, rows: OrdersRow[]) {
+            super.viewDataChanged(e, rows);
+            //Spreadsheet.DragAndDrop(this.inputsChange);
 
+            Spreadsheet.DragAndDrop((e) => {
+                this.inputsChange(e);
+            })
+        }
+        
+       
         private getEffectiveValue(item, field): any {
             var pending = this.pendingChanges[item.OrderId];
             if (pending && pending[field] !== undefined) {
@@ -128,65 +170,72 @@ namespace Inventory.Inventory {
 
         private inputsChange(e: JQueryEventObject) {
 
-            debugger;
-
             var cell = this.slickGrid.getCellFromEvent(e);
-            var item = this.itemAt(cell.row);
-            var input = $(e.target);
-            var field = input.data('field'); 
-            var text = Q.coalesce(Q.trimToNull(input.val()), '0');
-            var pending = this.pendingChanges[item.OrderId];
+            
+            if (cell != undefined) { 
+                var item = this.itemAt(cell.row);
+                var input = $(e.target);
+                var field = input.data('field');
+                var text = Q.coalesce(Q.trimToNull(input.val()), '0');
+                var pending = this.pendingChanges[item.OrderId];
 
-            var effective = this.getEffectiveValue(item, field);
-            var oldText: string;
-            if (input.hasClass("numeric"))
-                oldText = Q.formatNumber(effective, '0.##');
-            else
-                oldText = effective as string;
+                var effective = this.getEffectiveValue(item, field);
+                var oldText: string;
+                if (input.hasClass("numeric"))
+                    oldText = Q.formatNumber(effective, '0.##');
+                else
+                    oldText = effective as string;
 
-            var value; 
-             if (input.hasClass("numeric")) {
-                var i = Q.parseInteger(text);
-                if (isNaN(i) || i > 32767 || i < 0) {
-                    Q.notifyError(Q.text('Validation.Integer'), '', null);
-                    input.val(oldText);
-                    input.focus();
-                    return;
+                var value;
+                if (input.hasClass("numeric")) {
+                    var i = Q.parseInteger(text);
+                    if (isNaN(i) || i > 32767 || i < 0) {
+                        Q.notifyError(Q.text('Validation.Integer'), '', null);
+                        input.val(oldText);
+                        input.focus();
+                        return;
+                    }
+                    value = i;
                 }
-                value = i;
+                else {
+                    if (text == "0")
+                        return;
+                    value = text;
+                }
+                    
+                if (!pending) {
+                    this.pendingChanges[item.OrderId] = pending = {};
+                }
+
+                pending[field] = value;
+                item[field] = value;
+                this.view.refresh();
+
+                if (input.hasClass("numeric"))
+                    value = Q.formatNumber(value, '0.##');
+
+                input.val(value).addClass('dirty');
+
+                //this.view.refresh();
+                //if (value == 3) {
+                //    this.stringInputFormatter(str);
+                //}
+                //this.setSaveButtonState(); 
+                if (field != undefined)
+                    this.saveClick();
+                console.log("Saved");
             }
-            else
-                value = text;
-             
-
-            if (!pending) {
-                this.pendingChanges[item.OrderId] = pending = {};
-            } 
-
-            pending[field] = value;
-            item[field] = value; 
-            this.view.refresh();
-
-            if (input.hasClass("numeric"))
-                value = Q.formatNumber(value, '0.##');
-
-            input.val(value).addClass('dirty');
-
-            //this.view.refresh();
-            //if (value == 3) {
-            //    this.stringInputFormatter(str);
-            //}
-            //this.setSaveButtonState();
-            this.saveClick();
         }
-
+         
         private setSaveButtonState() {
             this.toolbar.findButton('apply-changes-button').toggleClass('disabled',
                 Object.keys(this.pendingChanges).length === 0);
         }
 
         private selectFormatter(ctx: Slick.FormatterContext, idField: string, lookup: Q.Lookup<any>) {
-            var klass = 'edit';
+
+            var isDraggable = true;
+            var klass = 'edit drag-fill';
             var item = ctx.item as OrdersRow;
             var pending = this.pendingChanges[item.OrderId];
             var column = ctx.column as Slick.Column;
@@ -196,8 +245,9 @@ namespace Inventory.Inventory {
             }
 
             var value = this.getEffectiveValue(item, idField);
-            var markup = "<select class='" + klass +
+            var markup = "<select draggable='" + isDraggable +"' class='" + klass +
                 "' data-field='" + idField +
+                
                 "' style='width: 100%; max-width: 100%'>";
             for (var c of lookup.items) {
                 let id = c[lookup.idField];
@@ -208,7 +258,6 @@ namespace Inventory.Inventory {
                 markup += ">" + Q.htmlEncode(c[lookup.textField]) + "</option>";
             }
             return markup + "</select>";
-        }
-
+        } 
     }
 }

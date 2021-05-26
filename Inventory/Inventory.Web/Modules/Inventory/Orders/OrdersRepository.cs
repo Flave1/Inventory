@@ -9,6 +9,8 @@ namespace Inventory.Inventory.Repositories
     using System;
     using System.Data;
     using System.Linq;
+    using Serenity;
+     
 
     public class OrdersRepository : BaseRepository
     {
@@ -109,7 +111,9 @@ namespace Inventory.Inventory.Repositories
                             query.Where(Fld.Status == "1" && Fld.Status == "2");//  Fulfilled && Unfulfilled
                         }
                     }
-                } 
+                }
+
+                //var user = User.GetUserDefinition<UserDefinition>(Serenity.Abstractions.IUserRetrieveService. UserRetriever);
             }
 
         }

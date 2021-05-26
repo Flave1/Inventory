@@ -17,6 +17,8 @@
     <TypeScriptCompile Remove="Modules\Inventory\OrderItems\OrderItemEditor.ts" />
     <TypeScriptCompile Remove="Modules\Inventory\OrderItems\OrderItemEditorDialog.ts" />
     <TypeScriptCompile Remove="Modules\Inventory\Orders\OrderStatusEditorDialog.ts" />
+    <TypeScriptCompile Remove="wwwroot\Scripts\SpreadSheet.ts" />
+    <Content Include="Modules\Common\Helpers\SpreadSheet.ts" />
     <None Update="wwwroot\**\*">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>

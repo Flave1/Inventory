@@ -29,10 +29,8 @@ namespace Inventory.Inventory {
                     this.form.ItemName.value = g.Name + " description";
                 }
             });
-
-           
-        }
-          
+             
+        } 
     }
 
 }

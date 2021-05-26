@@ -1,0 +1,17 @@
+
+.hold{
+    border:solid #ccc 4px;
+}
+.hovered{
+    background: #f4f4f4;
+    border-style: dashed;
+}
+  
+.highlight{
+    background-color: #c0ffc8;
+}
+
+.slick-row{
+    height : 60px;
+    border:1px solid red;
+}
